@@ -7,7 +7,8 @@
 # All rights reserved - Do Not Redistribute
 #
 
-include_recipe 'nodejs'
+# include_recipe 'nginx'
+# include_recipe 'nodejs'
 
 
 
@@ -29,4 +30,28 @@ node["nodejs-nginx"]["servers"].each do |server|
 		code "su " + server.user + " --c 'forever start " + server.script + "'"
 		not_if "su " + server.user + " --c 'forever list | grep -q \'" + server.script + "\''"
 	end
+
+	directory _dir + '/logs' do
+		owner "admin"
+		group "admin"
+		mode 0777
+	end
+
+	_conf = server.script.gsub('/', '_') + '.conf';
+	template '/etc/nginx/conf.d/' + _conf do
+		action 'create_if_missing'
+		source 'nginx.conf.erb'
+		owner 'root'
+		group 'root'
+		mode 0644
+		variables(
+			:nodejs_port => server.nodejs_port,
+			:server_name => server.server_name,
+			:base_dir => _dir
+		)
+	end
+end
+
+service 'nginx' do
+  action [:start :restart]
 end
