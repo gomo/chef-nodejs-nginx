@@ -53,5 +53,5 @@ node["nodejs-nginx"]["servers"].each do |server|
 end
 
 service 'nginx' do
-  action [:start :restart]
+  action [:start, :restart]
 end
