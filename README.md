@@ -1,2 +1,2 @@
-start-nodejs Cookbook
+nodejs-nginx Cookbook
 ===================

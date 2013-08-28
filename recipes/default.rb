@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: start-nodejs
+# Cookbook Name:: nodejs-nginx
 # Recipe:: default
 #
 # Copyright 2013, YOUR_COMPANY_NAME
@@ -9,7 +9,9 @@
 
 include_recipe 'nodejs'
 
-node["start-nodejs"]["servers"].each do |server|
+
+
+node["nodejs-nginx"]["servers"].each do |server|
 	_dir = File.dirname(server.script)
 	_script = File.basename(server.script)
 
